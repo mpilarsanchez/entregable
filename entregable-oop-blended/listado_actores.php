@@ -26,7 +26,7 @@ require_once 'partials/navbar.php';
               <tr>
                 <th scope="row"><?php echo $actor->getFirstName().$actor->getLastName(); ?></th>
                 <td><?php echo $actor->getRating(); ?></td>
-                <td><?php echo $actor->getFavorite_movie_id(); ?></td>
+                <td><?php echo DB::getMovieTitle($actor->getFavorite_movie_id()); ?></td>
               </tr>
             <?php endforeach; ?>
             </tbody>
