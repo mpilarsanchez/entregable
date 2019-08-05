@@ -64,7 +64,7 @@
 			global $connection;
 
 			$stmt = $connection->prepare("
-				SELECT m.id AS 'movie_id', m.title, m.rating, m.awards, m.release_date, m.length, g.name AS 'genre'
+				SELECT m.id AS 'movie_id', m.title, m.rating, m.awards, m.release_date, m.length, g.name AS 'genre', g.id AS 'genre_id'
 				FROM movies as m
 				LEFT JOIN genres as g
 				ON g.id = m.genre_id
@@ -83,7 +83,7 @@
 				//var_dump($finalMovie);
 //2.	Corregir en el método getAllMovies la asignación de id de la película y el id del género
 				$finalMovie->setLength($movie['length']);
-				$finalMovie->setGenreID($movie['movie_id']);//?????????
+				$finalMovie->setGenreID($movie['genre_id']);
 				$finalMovie->setGenreName($movie['genre']);
 				$finalMovie->setId($movie['movie_id']);
 
@@ -171,6 +171,24 @@
 
 				return true;
 			} else {
+				return false;
+			}
+		}
+
+
+		public function getMovieTitle($id)
+		{
+			global $connection;
+
+			try {
+				$stmt = $connection->prepare("
+					SELECT movies.title FROM movies WHERE movies.id = $id;
+				");
+
+				$stmt->execute();
+        $movie_title = $stmt->fetch(PDO::FETCH_ASSOC);
+				return $movie_title['title'];
+			} catch (PDOException $exception) {
 				return false;
 			}
 		}
